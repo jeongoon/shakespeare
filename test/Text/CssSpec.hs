@@ -301,6 +301,30 @@ bin {
         }
         |]
 
+    it "lucius @layer block" $
+      celper "@layer utilities{.padding{padding:1rem}}" [lucius|
+        @layer utilities{
+            .padding { padding: 1rem; }
+        }
+        |]
+
+    it "lucius @layer declaration" $
+      celper "@layer utilities;" [lucius|
+        @layer utilities;
+        |]
+
+    it "lucius @layer multiple" $
+      celper "@layer utilities, components;" [lucius|
+        @layer utilities, components;
+        |]
+
+    it "lucius @layer anonymous" $
+      celper "@layer {.padding{padding:1rem}}" [lucius|
+        @layer {
+            .padding { padding: 1rem; }
+        }
+        |]
+
     {-
     it "cassius removes whitespace" $ do
       celper "foo{bar:baz}" [cassius|
@@ -950,6 +974,30 @@ bin {
                 set: net;
                 dasut: yeosut;
             }
+        }
+        |]
+
+    it "lucius @layer block (ordered)" $
+      celper "@layer utilities{.padding{padding:1rem}}" [Ordered.lucius|
+        @layer utilities{
+            .padding { padding: 1rem; }
+        }
+        |]
+
+    it "lucius @layer declaration (ordered)" $
+      celper "@layer utilities;" [Ordered.lucius|
+        @layer utilities;
+        |]
+
+    it "lucius @layer multiple (ordered)" $
+      celper "@layer utilities, components;" [Ordered.lucius|
+        @layer utilities, components;
+        |]
+
+    it "lucius @layer anonymous (ordered)" $
+      celper "@layer {.padding{padding:1rem}}" [Ordered.lucius|
+        @layer {
+            .padding { padding: 1rem; }
         }
         |]
 
