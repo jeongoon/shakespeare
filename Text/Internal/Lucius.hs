@@ -268,8 +268,11 @@ parseTopLevels order =
         return $ TopAtBlock name selector b
     parseBlocks front = do
         whiteSpace
-        (char '}' >> return (map compressBlock $ front []))
-            <|> ((parseBlock order) >>= \x -> parseBlocks (front . (:) x))
+        (char '}' >> return (map compressTopLevel $ front []))
+            <|> (nestedItem >>= \x -> parseBlocks (front . (:) x))
+      where
+        nestedItem = media <|> supports <|> layer <|> topAtBlock
+                 <|> fmap TopBlock (parseBlock order)
 
 stringCI :: String -> Parser ()
 stringCI [] = return ()
@@ -310,13 +313,13 @@ luciusRTInternal order tl =
         b' <- goBlock scope b
         rest' <- go scope rest
         Right $ map TopBlock b' ++ rest'
-    go scope (TopAtBlock name m' bs:rest) = do
+    go scope (TopAtBlock name m' nested:rest) = do
         let scope' = map goScope scope
             render = error "luciusRT has no URLs"
         m <- mapM (contentToBuilderRT scope' render) m'
-        bs' <- mapM (goBlock scope) bs
+        nested' <- go scope nested
         rest' <- go scope rest
-        Right $ TopAtBlock name (mconcat m) (concat bs') : rest'
+        Right $ TopAtBlock name (mconcat m) nested' : rest'
     go scope (TopVar k v:rest) = go ((pack k, RTVRaw $ pack v):scope) rest
 
     goBlock :: [(Text, RTValue)]

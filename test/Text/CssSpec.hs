@@ -325,6 +325,42 @@ bin {
         }
         |]
 
+    it "lucius @media inside @layer" $
+      celper "@layer components {@media only screen {.btn{font-size:1.5rem}}}" [lucius|
+        @layer components {
+            @media only screen {
+                .btn { font-size: 1.5rem; }
+            }
+        }
+        |]
+
+    it "lucius @layer inside @media" $
+      celper "@media (max-width: 600px) {@layer utilities {.hidden{display:none}}}" [lucius|
+        @media (max-width: 600px) {
+            @layer utilities {
+                .hidden { display: none; }
+            }
+        }
+        |]
+
+    it "lucius @supports inside @layer" $
+      celper "@layer base {@supports (display: grid) {.grid{display:grid}}}" [lucius|
+        @layer base {
+            @supports (display: grid) {
+                .grid { display: grid; }
+            }
+        }
+        |]
+
+    it "lucius @media inside @media" $
+      celper "@media screen {@media (min-width: 768px) {.container{max-width:720px}}}" [lucius|
+        @media screen {
+            @media (min-width: 768px) {
+                .container { max-width: 720px; }
+            }
+        }
+        |]
+
     {-
     it "cassius removes whitespace" $ do
       celper "foo{bar:baz}" [cassius|
@@ -998,6 +1034,42 @@ bin {
       celper "@layer {.padding{padding:1rem}}" [Ordered.lucius|
         @layer {
             .padding { padding: 1rem; }
+        }
+        |]
+
+    it "lucius @media inside @layer (ordered)" $
+      celper "@layer components {@media only screen {.btn{font-size:1.5rem}}}" [Ordered.lucius|
+        @layer components {
+            @media only screen {
+                .btn { font-size: 1.5rem; }
+            }
+        }
+        |]
+
+    it "lucius @layer inside @media (ordered)" $
+      celper "@media (max-width: 600px) {@layer utilities {.hidden{display:none}}}" [Ordered.lucius|
+        @media (max-width: 600px) {
+            @layer utilities {
+                .hidden { display: none; }
+            }
+        }
+        |]
+
+    it "lucius @supports inside @layer (ordered)" $
+      celper "@layer base {@supports (display: grid) {.grid{display:grid}}}" [Ordered.lucius|
+        @layer base {
+            @supports (display: grid) {
+                .grid { display: grid; }
+            }
+        }
+        |]
+
+    it "lucius @media inside @media (ordered)" $
+      celper "@media screen {@media (min-width: 768px) {.container{max-width:720px}}}" [Ordered.lucius|
+        @media screen {
+            @media (min-width: 768px) {
+                .container { max-width: 720px; }
+            }
         }
         |]
 
